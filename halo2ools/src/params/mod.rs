@@ -1,11 +1,9 @@
-use halo2_proofs::halo2curves::ff::PrimeField;
-use halo2_proofs::halo2curves::pairing::Engine;
 use halo2_proofs::poly::commitment::Params;
 use halo2_proofs::poly::kzg::commitment::ParamsKZG;
 
 use halo2_proofs::halo2curves::bn256::Bn256;
 use rand::rngs::OsRng;
-use std::fmt::Debug;
+
 use std::fs::File;
 use std::io::Write;
 
@@ -26,10 +24,9 @@ pub fn gen_param_by_downsize(target_degree: u32, src_param: &ProverParams) -> Pr
 }
 
 pub fn load_param(param_file: &String) -> ProverParams {
-    let file = File::open(&param_file).expect("open exist param successfully");
-    let params =
-        ProverParams::read(&mut std::io::BufReader::new(file)).expect("Failed to read params");
-    params
+    let file = File::open(param_file).expect("open exist param successfully");
+
+    ProverParams::read(&mut std::io::BufReader::new(file)).expect("Failed to read params")
 }
 
 pub fn save_param(param_file: &String, param: &ProverParams) {
