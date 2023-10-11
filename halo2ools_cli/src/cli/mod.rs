@@ -22,9 +22,10 @@ pub struct DownsizeParamOpt {
     /// target degree
     #[arg(long = "k", required = true)]
     pub(crate) degree: u32,
-    #[arg(long = "src_file", required = true)]
+    /// src_param file
+    #[arg(long = "src", required = true)]
     pub(crate) src_param: String,
-
-    #[arg(long = "target_file", required = true)]
+    /// target_param file
+    #[arg(long = "target", required = true)]
     pub(crate) target_param: String,
 }
