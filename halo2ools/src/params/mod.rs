@@ -1,7 +1,7 @@
-use halo2_proofs::poly::commitment::Params;
-use halo2_proofs::poly::kzg::commitment::ParamsKZG;
-
-use halo2_proofs::halo2curves::bn256::Bn256;
+use halo2_proofs::{
+    halo2curves::bn256::Bn256,
+    poly::{commitment::Params, kzg::commitment::ParamsKZG},
+};
 use rand::rngs::OsRng;
 
 use std::fs::File;
