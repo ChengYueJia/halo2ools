@@ -4,8 +4,10 @@ use halo2_proofs::{
 };
 use rand::rngs::OsRng;
 
+use halo2_proofs::halo2curves::pairing::{Engine, MultiMillerLoop};
 use std::fs::File;
 use std::io::Write;
+use std::path::Path;
 
 type ProverParams = ParamsKZG<Bn256>;
 
@@ -36,4 +38,27 @@ pub fn save_param(param_file: &String, param: &ProverParams) {
     file.write_all(&buf[..])
         .expect("Failed to write params to file");
     println!("Success to write param: {param_file}");
+}
+
+pub fn load_or_build_unsafe_params<E: Engine>(
+    k: u32,
+    cache_file_opt: Option<&Path>,
+) -> ParamsKZG<E> {
+    if let Some(cache_file) = &cache_file_opt {
+        if Path::exists(&cache_file) {
+            println!("read params K={} from {:?}", k, cache_file);
+            let mut fd = std::fs::File::open(&cache_file).unwrap();
+            return ParamsKZG::<E::G1Affine>::read(&mut fd).unwrap();
+        }
+    }
+
+    let params = ParamsKZG::<E::G1Affine>::unsafe_setup::<E>(k);
+
+    if let Some(cache_file) = &cache_file_opt {
+        println!("write params K={} to {:?}", k, cache_file);
+        let mut fd = std::fs::File::create(&cache_file).unwrap();
+        params.write(&mut fd).unwrap();
+    };
+
+    params
 }
