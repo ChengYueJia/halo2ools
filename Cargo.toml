@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "halo2ools",
+    "halo2ools_cli"
+]
+resolver = "2"
